@@ -1,4 +1,3 @@
-```dockerfile
 # --------------------------------------------------
 # 1. Build the DVD navigation WebAssembly components
 # --------------------------------------------------
@@ -99,5 +98,4 @@ EXPOSE 8080
 
 # Start the Rust API and then keep Nginx in the foreground.
 CMD ["sh", "-c", "/usr/local/bin/webdvd-server /library --port 3000 --cache-dir /cache & exec nginx -g 'daemon off;'"]
-```
 
