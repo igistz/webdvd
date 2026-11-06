@@ -30,10 +30,24 @@ impl Library {
                 continue;
             }
 
-            let video_ts = path.join("VIDEO_TS");
-            if !video_ts.is_dir() {
-                continue;
-            }
+            let direct_video_ts = path.join("VIDEO_TS");
+
+let video_ts = if direct_video_ts.is_dir() {
+    direct_video_ts
+} else {
+    let mut nested_dirs: Vec<_> = std::fs::read_dir(&path)?
+        .filter_map(|e| e.ok())
+        .map(|e| e.path())
+        .filter(|p| p.is_dir() && p.join("VIDEO_TS").is_dir())
+        .collect();
+
+    nested_dirs.sort();
+
+    match nested_dirs.into_iter().next() {
+        Some(dir) => dir.join("VIDEO_TS"),
+        None => continue,
+    }
+};
 
             let slug = entry
                 .file_name()
